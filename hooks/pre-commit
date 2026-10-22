@@ -1,0 +1,29 @@
+#!/bin/sh
+# code_quality-hook v1
+# Contract: git pre-commit hook. Exit 0 to allow the commit, non-zero to block.
+#
+# Order (pinned; each stage runs only if all earlier stages passed):
+#   1. source libs (CODE_QUALITY_LIB, else ./lib next to the hook, else ../lib)
+#   2. cq_require_jq
+#   3. chain executable pre-commit.local (same dir) with "$@"; non-zero status exits
+#   4. cq_staged_files empty -> exit 0
+#   5. cq_export_index once; every check runs against $CQ_EXPORT
+#   6. linters: for each name in CQ_CHECKS, cq_run_check <name>; run ALL, then fail if any failed
+#   7. sink: CODE_QUALITY_SINK (environment ONLY), executable file, cwd = $CQ_EXPORT,
+#      staged paths NUL-delimited on stdin, non-zero fails the commit
+#   8. review: call cq_review if defined (section 05)
+CQ_CHECKS="chef json yaml ps1 sh py"
+d=$(dirname "$0")
+if [ -n "${CODE_QUALITY_LIB:-}" ]; then
+    l=$CODE_QUALITY_LIB
+elif [ -d "$d/lib" ]; then
+    l=$d/lib
+else
+    l=$d/../lib
+fi
+for m in common staged checks wsl review; do
+    # shellcheck disable=SC1090
+    [ -f "$l/$m.sh" ] && . "$l/$m.sh"
+done
+cq_not_implemented "pre-commit"
+exit $?
