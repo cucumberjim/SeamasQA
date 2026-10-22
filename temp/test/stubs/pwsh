@@ -1,0 +1,4 @@
+#!/bin/sh
+# Stub pwsh: logs cwd/args; exit status from PWSH_STUB_STATUS (default 0).
+echo "cwd=$(pwd) args=$*" >> "${STUB_LOG_DIR:-/tmp}/pwsh.log"
+exit "${PWSH_STUB_STATUS:-0}"

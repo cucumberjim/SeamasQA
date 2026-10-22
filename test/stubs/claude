@@ -1,0 +1,16 @@
+#!/bin/sh
+# Stub claude. CLAUDE_STUB_MODE: pass|fail|is_error|nonsuccess|hang|garbage (default pass).
+d=${STUB_LOG_DIR:-/tmp}
+echo "cwd=$(pwd) args=$*" >> "$d/claude.log"
+[ -t 0 ] || cat > "$d/claude.stdin"
+id=${CLAUDE_STUB_SESSION_ID:-11111111-2222-4333-8444-555555555555}
+# Result field name lives only in $out (verify against real CLI in section-05).
+out='"structured_output"'
+case ${CLAUDE_STUB_MODE:-pass} in
+  pass) echo "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"session_id\":\"$id\",$out:{\"decision\":\"pass\",\"findings\":[]}}" ;;
+  fail) echo "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"session_id\":\"$id\",$out:{\"decision\":\"fail\",\"findings\":[{\"id\":\"F1\",\"location\":\"a.sh:1\",\"explanation\":\"example finding\",\"severity\":\"correctness\"}]}}" ;;
+  is_error) echo "{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":true,\"session_id\":\"$id\"}" ;;
+  nonsuccess) echo "{\"type\":\"result\",\"subtype\":\"error_max_turns\",\"is_error\":false,\"session_id\":\"$id\"}" ;;
+  hang) exec sleep 300 ;;
+  garbage) echo "this is not json" ;;
+esac

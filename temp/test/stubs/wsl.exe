@@ -1,0 +1,4 @@
+#!/bin/sh
+# Stub wsl.exe: logs cwd/args; exit status from WSL_STUB_STATUS (default 0).
+echo "cwd=$(pwd) args=$*" >> "${STUB_LOG_DIR:-/tmp}/wsl.exe.log"
+exit "${WSL_STUB_STATUS:-0}"

@@ -1,0 +1,4 @@
+#!/bin/sh
+# Stub chef: logs cwd/args; exit status from CHEF_STUB_STATUS (default 0).
+echo "cwd=$(pwd) args=$*" >> "${STUB_LOG_DIR:-/tmp}/chef.log"
+exit "${CHEF_STUB_STATUS:-0}"

@@ -1,0 +1,4 @@
+#!/bin/sh
+# Stub cookstyle: logs cwd/args; exit status from COOKSTYLE_STUB_STATUS (default 0).
+echo "cwd=$(pwd) args=$*" >> "${STUB_LOG_DIR:-/tmp}/cookstyle.log"
+exit "${COOKSTYLE_STUB_STATUS:-0}"

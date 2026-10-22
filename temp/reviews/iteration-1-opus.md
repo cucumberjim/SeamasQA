@@ -1,0 +1,4 @@
+# Opus Review (summary)
+
+Reviewer findings, condensed (full list reproduced as integrated in ../claude-integration-notes.md):
+1 clean review should pass first time (decision field); 2 rule-2 lets any diff through; 3 hash index tree via `git write-tree`; 4 installer idempotency/marker; 5 single install model (shim + user-level lib); 6 checkout-index export for checks; 7 test isolation; 8 Claude failure modes (is_error, UUID validation, timeout); 9 verify CLI facts; 10 verdict path may be protected under .git; 11 WSL: cached exported tarball, MSYS path conversion, stale sweep, UTF-16; 12 build --commit self-review; 13 staged vs managed files, ACMR, .yaml, chef nested; 14 skip-var truthiness; 15 jq dependency; 16 drop macOS; 17 pre-commit.local chaining; 18 prompt injection; 19 secrets exclusion; 20 never read sink/model/strictness from repo files; YAGNI trims; extra tests.
